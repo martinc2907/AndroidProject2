@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 
@@ -54,10 +55,11 @@ public class Tab1 extends Fragment {
 
         callbackManager  = CallbackManager.Factory.create();
         loginButton = (LoginButton) rootView.findViewById(R.id.login_button);
+        loginButton.setReadPermissions(Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends"));
+
         // If using in a fragment
         loginButton.setFragment(this);
-
-
         textView = rootView.findViewById(R.id.email);
 
 
@@ -75,6 +77,7 @@ public class Tab1 extends Fragment {
                         StringBuilder names = new StringBuilder();
 
                         try {
+                            Log.d("object",object.toString());
                             object = object.getJSONObject("taggable_friends");
                             jsonArrayFriends = object.getJSONArray("data");
                             int length  = jsonArrayFriends.length();
@@ -86,10 +89,11 @@ public class Tab1 extends Fragment {
                             e.printStackTrace();
                         }
                         textView.setText(names.toString());
+                        textView.append(find_number_in_phone());
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields","first_name, last_name,taggable_friends" );
+                parameters.putString("fields","first_name, last_name, taggable_friends" );
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -164,7 +168,6 @@ public class Tab1 extends Fragment {
 
         String[] str1=str.split("\n");
         for(int i=0;i<str1.length;i++){
-
             arr_list.add(str1[i]);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
