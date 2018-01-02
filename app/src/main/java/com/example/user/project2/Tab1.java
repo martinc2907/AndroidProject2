@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -30,8 +31,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,6 +54,7 @@ public class Tab1 extends Fragment {
     CustomListAdapter listAdapter;
     ArrayList<String> nameArray = new ArrayList<String>();
     ArrayList<String> urlArray = new ArrayList<String>();
+    ArrayList<String> idArray = new ArrayList<String>();
     ArrayList<String> infoArray = new ArrayList<String>();
 
     @Override
@@ -59,7 +64,7 @@ public class Tab1 extends Fragment {
 
         callbackManager  = CallbackManager.Factory.create();
         loginButton = (LoginButton) rootView.findViewById(R.id.login_button);
-        //textView = rootView.findViewById(R.id.email);
+        textView = rootView.findViewById(R.id.email);
         listView = rootView.findViewById(R.id.listview);
 
         // If using in a fragment
@@ -77,12 +82,14 @@ public class Tab1 extends Fragment {
                         String picURL = null;
                         try {
                             object = object.getJSONObject("taggable_friends");
-                            //jsonTest = object.toString();
+                            jsonTest = object.toString();
                             jsonArrayFriends = object.getJSONArray("data");
                             int length  = jsonArrayFriends.length();
                             for(int i = 0; i< length; i++){
                                 object = jsonArrayFriends.getJSONObject(i);
                                 nameArray.add(object.getString("name"));
+
+                                idArray.add(object.getString("id"));
 
                                 object = object.getJSONObject("picture");
                                 object = object.getJSONObject("data");
@@ -95,6 +102,28 @@ public class Tab1 extends Fragment {
                         }
                         //textView.setText(jsonTest);
                         //new DownloadImageTask(imageView).execute(picURL);
+
+                        //Communicate with server.
+                        JSONObject postData = new JSONObject();
+                        JSONArray friendArray = new JSONArray();
+                        try{
+                            for (int i = 0; i < nameArray.size(); i++) {
+                                JSONObject friend = new JSONObject();
+                                friend.put("name", nameArray.get(i));
+                                friend.put("id",idArray.get(i));
+
+                                //Add to posting JSONObject.
+                                friendArray.put(i,friend);
+                            }
+                            postData.put("array",friendArray);
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Log.e("TAG1",postData.toString());
+                        SendDeviceDetails send = new SendDeviceDetails();
+                        send.execute("http:/52.78.103.222:8080/", postData.toString());
+
                         listAdapter = new CustomListAdapter(getActivity(),nameArray,infoArray,urlArray);
                         listView.setAdapter(listAdapter);
                     }
@@ -104,7 +133,6 @@ public class Tab1 extends Fragment {
                 request.setParameters(parameters);
                 request.executeAsync();
             }
-
 
             @Override
             public void onCancel() {
@@ -131,8 +159,8 @@ public class Tab1 extends Fragment {
         final String graphPath = "/" + friendlistId + "/members/";
         AccessToken token = AccessToken.getCurrentAccessToken();
         GraphRequest request = new GraphRequest(token, graphPath, null, HttpMethod.GET, new GraphRequest.)
-
     }
 */
+
 }
 
