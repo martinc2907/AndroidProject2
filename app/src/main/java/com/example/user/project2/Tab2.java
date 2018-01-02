@@ -39,6 +39,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.*;
@@ -53,6 +54,8 @@ public class Tab2 extends Fragment {
     private static int PICK_IMAGE_REQUEST = 1;
 
     public String data_link;
+
+    public ArrayList<String> image_list = new ArrayList<String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -226,9 +229,12 @@ public class Tab2 extends Fragment {
 
                     String line = "";
                     while((line = reader.readLine()) != null){
+                        Log.d("line is this", line);
                         buffer.append(line);
+                        if(line.contains("image")){
+                            image_list.add(line);
+                        }
                     }
-
                     return buffer.toString();
 
                 } catch (MalformedURLException e){
@@ -257,7 +263,11 @@ public class Tab2 extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            tvData.setText(result);
+            Log.d("get data", result);
+            for(int i= 0; i<image_list.size(); i++){
+                Log.d("element well? ", image_list.get(i));
+            }
         }
+
     }
 }
