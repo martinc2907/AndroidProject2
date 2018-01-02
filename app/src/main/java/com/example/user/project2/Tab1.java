@@ -1,9 +1,13 @@
 package com.example.user.project2;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +29,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -50,15 +58,6 @@ public class Tab1 extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1, container, false);
-
-/*
-            JSONObject json;
-            String a = JSONObject.quote("한글+a<.../>kk12_{}");
-            JSONObject
-            json = new JSONObject();
-            Log.e("TAG", "TESTING JSON"+json.toString());
-*/
-
 
         callbackManager  = CallbackManager.Factory.create();
         loginButton = (LoginButton) rootView.findViewById(R.id.login_button);
@@ -98,6 +97,16 @@ public class Tab1 extends Fragment{
                                 object = object.getJSONObject("picture");
                                 object = object.getJSONObject("data");
                                 urlArray.add(object.getString("url"));
+
+                                String one = Integer.toString(i);
+                                String temp = object.getString("url");
+                                try {
+                                        new DoImage(picArray).execute(one,temp).get();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -118,6 +127,7 @@ public class Tab1 extends Fragment{
                                 friend.put("phone", "No Phone Number");
                                 friend.put("url", urlArray.get(i));
 
+                                friend.put("pic",picArray.get(i));
                                 //Add to posting JSONObject.
                                 friendArray.put(friend);
                             }
@@ -125,7 +135,13 @@ public class Tab1 extends Fragment{
                             e.printStackTrace();
                         }
                         SendPost send = new SendPost();
-                        send.execute("http://52.78.103.222:8080/", friendArray.toString());
+                        try {
+                            send.execute("http://52.78.103.222:8080/", friendArray.toString()).get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
 
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -165,7 +181,9 @@ public class Tab1 extends Fragment{
                                     JSONObject temp = json.getJSONObject(0);
                                     textView.setText( temp.get("phone").toString());
                                     nameView.setText(temp.get("name").toString());
-                                    new DownloadImageTask(imageView).execute(temp.get("url").toString());
+                                    Log.e("TEST",temp.get("pic").toString());
+
+                                    new DownloadImageTask(imageView).execute(temp.get("pic").toString());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -213,6 +231,8 @@ public class Tab1 extends Fragment{
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 
 
 /*
