@@ -1,25 +1,24 @@
 package com.example.user.project2;
 
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.CursorLoader;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.GridView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +26,7 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Console;
 import java.io.File;
@@ -41,8 +41,8 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 
+
 import static android.app.Activity.RESULT_OK;
-import static android.widget.Toast.*;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -55,7 +55,9 @@ public class Tab2 extends Fragment {
 
     public String data_link;
 
-    public ArrayList<String> image_list = new ArrayList<String>();
+    public GridView gridViews;
+
+    public ArrayList<String> image_list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,10 +66,15 @@ public class Tab2 extends Fragment {
         final View rootView = inflater.inflate(R.layout.tab2, container, false);
         final Button load_image = (Button)rootView.findViewById(R.id.load_image);
         Button  upload = (Button)rootView.findViewById(R.id.upload);
+
+        gridViews = (GridView)rootView.findViewById(R.id.listview);
+
+
         load_image.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 //need loading
+                image_list = new ArrayList<String>();
                 new GETTask().execute();
             }
         });
@@ -77,6 +84,18 @@ public class Tab2 extends Fragment {
                 loadImagefromGallery(rootView);
             }
         });
+
+//        gridViews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+//                //ArrayList<String> link = gallery_adapter.getLinks();
+//                Intent i = new Intent(getActivity().getApplicationContext(), ItemClick.class);
+//
+//                i.putExtra("id", image_list.get(position));
+//                startActivity(i);
+//            }
+//        });
+
         return rootView;
     }
 
@@ -92,9 +111,9 @@ public class Tab2 extends Fragment {
             if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data){
                 Uri uri = data.getData();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth()/3,bitmap.getHeight()/3,true);
+                //opbitmap = Bitmap.createScaledBitmap(bitmap,300,300,true);
                 String encodedImage = load_getStringFromBitmap(bitmap);
-                Log.d("encodedImage" , encodedImage);
+                //Log.d("encodedImage" , encodedImage);
                 data_link = encodedImage;
                 new JSONTask().execute(data_link);
             }
@@ -263,11 +282,23 @@ public class Tab2 extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Log.d("get data", result);
+            //Log.d("get data", result);
+            tab2_adapter mAdapter = new tab2_adapter();
             for(int i= 0; i<image_list.size(); i++){
-                Log.d("element well? ", image_list.get(i));
+                String splited = image_list.get(i).substring(14,(image_list.get(i).length() - 2));
+                String str = splited.replace("\\n", "");
+                Log.d("splited",str);
+                byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Bitmap thumbnail = ThumbnailUtils.extractThumbnail(decodedByte,300,300);
+                mAdapter.addItem(thumbnail);
+                Log.d("added","image");
             }
+            mAdapter.notifyDataSetChanged();
+            gridViews.setAdapter(mAdapter);
         }
 
     }
+
+
 }
