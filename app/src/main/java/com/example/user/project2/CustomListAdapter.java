@@ -16,7 +16,9 @@ import java.util.ArrayList;
  */
 
 public class CustomListAdapter extends ArrayAdapter {
-    int[] colors = {0xffff6b6b, 0xffef6b6b, 0xffcf6b6b, 0xffaf6b6b, 0xff8f6b6b, 0xff6f6b6b, 0xff4f6b6b};
+    int[] colors =new int[50];
+    int start = 0xffff6b6b;
+    //{0xffff6b6b, 0xffef6b6b, 0xffcf6b6b, 0xffaf6b6b, 0xff8f6b6b, 0xff6f6b6b, 0xff4f6b6b};
     int[] colors2 = {0xffC62828, 0xffD32F2F, 0xffE53935, 0xffF44336, 0xffEF5350, 0xffE57373, 0xffEF9A9A};
     private final Activity context;
     private final ArrayList<String> urlArray;   //array of URLs later.
@@ -27,6 +29,10 @@ public class CustomListAdapter extends ArrayAdapter {
 
         super(context,R.layout.listview_row , nameArrayParam);
 
+        for(int i = 0; i < 50; i ++){
+            colors[i] = start;
+            start -= 0x00200000;
+        }
         this.context=context;
         this.urlArray = urlArray;
         this.nameArray = nameArrayParam;

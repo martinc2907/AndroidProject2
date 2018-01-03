@@ -3,7 +3,9 @@ package com.example.user.project2;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +14,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +29,10 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -35,8 +40,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
 
@@ -65,14 +73,22 @@ public class Tab1 extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        AppEventsLogger.activateApp(getActivity());
+
         View rootView = inflater.inflate(R.layout.tab1, container, false);
+
 
         callbackManager  = CallbackManager.Factory.create();
         loginButton = (LoginButton) rootView.findViewById(R.id.login_button);
-
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
-
-
+//
+//<<<<<<< HEAD
+//        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
+//
+//
+//=======
+//>>>>>>> 21682da61ece8058d854c2a4c805cbbbe03bcc16
         textView = rootView.findViewById(R.id.email);
         listView = rootView.findViewById(R.id.listview);
         contactButton = rootView.findViewById(R.id.contact);
@@ -82,6 +98,8 @@ public class Tab1 extends Fragment{
 
         // If using in a fragment
         loginButton.setFragment(this);
+
+        loginButton.setReadPermissions(Arrays.asList("public_profile","email","user_friends"));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
