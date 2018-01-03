@@ -19,17 +19,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.Console;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,9 +37,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 
-
 import static android.app.Activity.RESULT_OK;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by user on 2017-12-31.
@@ -58,6 +52,8 @@ public class Tab2 extends Fragment {
     public GridView gridViews;
 
     public ArrayList<String> image_list;
+
+    public static ArrayList<Bitmap> bitmaps_list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,16 +81,16 @@ public class Tab2 extends Fragment {
             }
         });
 
-//        gridViews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                //ArrayList<String> link = gallery_adapter.getLinks();
-//                Intent i = new Intent(getActivity().getApplicationContext(), ItemClick.class);
-//
-//                i.putExtra("id", image_list.get(position));
-//                startActivity(i);
-//            }
-//        });
+        gridViews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent i = new Intent(getActivity().getApplicationContext(), ItemClick.class);
+
+                //i.putExtra("id", bitmaps_list.get(position)); //
+                i.putExtra(("id"),position);
+                startActivity(i);
+            }
+        });
 
         return rootView;
     }
@@ -284,15 +280,21 @@ public class Tab2 extends Fragment {
             super.onPostExecute(result);
             //Log.d("get data", result);
             tab2_adapter mAdapter = new tab2_adapter();
+            bitmaps_list = new ArrayList<Bitmap>();
             for(int i= 0; i<image_list.size(); i++){
+                //tab2_adapter mAdapter = new tab2_adapter();
                 String splited = image_list.get(i).substring(14,(image_list.get(i).length() - 2));
                 String str = splited.replace("\\n", "");
                 Log.d("splited",str);
                 byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                //if(decodedByte != null){
+                    bitmaps_list.add(decodedByte);
+                //}
                 Bitmap thumbnail = ThumbnailUtils.extractThumbnail(decodedByte,300,300);
                 mAdapter.addItem(thumbnail);
                 Log.d("added","image");
+                //gridViews.setAdapter(mAdapter);
             }
             mAdapter.notifyDataSetChanged();
             gridViews.setAdapter(mAdapter);
