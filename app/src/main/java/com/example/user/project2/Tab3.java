@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +42,8 @@ public class Tab3 extends Fragment implements View.OnClickListener {
 
     public tab3_adapter mAdapter;
 
+    private EditText editSearch;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +51,7 @@ public class Tab3 extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.tab3, container, false);
 
         listViews = (ListView)rootView.findViewById(R.id.delivery);
+        //editSearch = (EditText) rootView.findViewById(R.id.editTextFilter);
 
         Button all_menu = (Button)rootView.findViewById(R.id.all_food);
         Button chicken = (Button)rootView.findViewById(R.id.chicken);

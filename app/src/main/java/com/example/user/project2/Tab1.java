@@ -2,7 +2,6 @@ package com.example.user.project2;
 
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -18,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,7 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 
@@ -71,6 +69,8 @@ public class Tab1 extends Fragment{
 
         callbackManager  = CallbackManager.Factory.create();
         loginButton = (LoginButton) rootView.findViewById(R.id.login_button);
+
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
 
 
         textView = rootView.findViewById(R.id.email);

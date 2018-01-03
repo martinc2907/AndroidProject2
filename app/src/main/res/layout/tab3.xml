@@ -8,6 +8,13 @@
     android:paddingBottom="60dp"
     android:background = "#CFCDD7">
 
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/editTextFilter"-->
+        <!--android:hint="검색어를 입력하세요."/>-->
+
+
 
     <LinearLayout
         android:layout_marginTop="20dp"
