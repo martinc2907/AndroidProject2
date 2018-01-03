@@ -1,11 +1,11 @@
 package com.example.user.project2;
 
+
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,11 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -36,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
 
@@ -68,6 +71,7 @@ public class Tab1 extends Fragment{
 
         callbackManager  = CallbackManager.Factory.create();
         loginButton = (LoginButton) rootView.findViewById(R.id.login_button);
+
 
         textView = rootView.findViewById(R.id.email);
         listView = rootView.findViewById(R.id.listview);
@@ -179,6 +183,7 @@ public class Tab1 extends Fragment{
                 GraphRequest request =  GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback(){
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response){
+
                         fbFlag = true;
                     JSONArray jsonArrayFriends = null;
                     String jsonTest = null;
@@ -210,6 +215,7 @@ public class Tab1 extends Fragment{
                                 e.printStackTrace();
                             } catch (ExecutionException e) {
                                 e.printStackTrace();
+
                             }
                         }
                     } catch (JSONException e) {
@@ -267,6 +273,77 @@ public class Tab1 extends Fragment{
         return rootView;
     }
 
+//    private String find_number_in_phone(){
+//        ContentResolver cr = getActivity().getContentResolver();
+//        Cursor cursor = cr.query(
+//                ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
+//
+//        int ididx = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+//        int nameidx = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+//
+//        StringBuilder result = new StringBuilder();
+//        while(cursor.moveToNext())
+//        {
+//            result.append(cursor.getString(nameidx) + " :");
+//
+//            String id = cursor.getString(ididx);
+//            Cursor cursor2 = cr.query(ContactsContract.CommonDataKinds.
+//                            Phone.CONTENT_URI,null,
+//                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?",
+//                    new String[]{id},null);
+//
+//            int typeidx = cursor2.getColumnIndex(
+//                    ContactsContract.CommonDataKinds.Phone.TYPE);
+//
+//            int numidx = cursor2.getColumnIndex(
+//                    ContactsContract.CommonDataKinds.Phone.NUMBER);
+//
+//            while (cursor2.moveToNext()){
+//                String num = cursor2.getString(numidx);
+//                switch(cursor2.getInt(typeidx)){
+//                    case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+//                        result.append(" Mobile:"+num);
+//                        break;
+//                    case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+//                        result.append(" Home:"+num);
+//                        break;
+//                    case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+//                        result.append(" Work:"+num);
+//                        break;
+//                }
+//            }
+//            cursor2.close();
+//            result.append("\n");
+//
+//        }
+//        cursor.close();
+//
+//        return result.toString();
+//    }
+
+//    private ArrayAdapter<String> phone_contact_find(){
+//
+//        String str= find_number_in_phone();
+//        ArrayList<String> arr_list = new ArrayList<String>();
+//
+//        String[] str1=str.split("\n");
+//        for(int i=0;i<str1.length;i++){
+//            arr_list.add(str1[i]);
+//        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+//                android.R.layout.simple_list_item_1,  arr_list);
+//        // Assign adapter to ListView
+//        adapter.sort(new Comparator<String>(){
+//
+//            @Override
+//            public int compare(String arg1,String arg0){
+//                return arg1.compareTo(arg0);
+//            }
+//        });
+//
+//        return adapter;
+//    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -274,6 +351,7 @@ public class Tab1 extends Fragment{
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void find_number_in_phone(){
         String[] result = null;
         Cursor cursor= getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null);
