@@ -119,7 +119,7 @@ public class Tab2 extends Fragment {
         }
     }
 
-    public class JSONTask extends AsyncTask<String, String, String>{
+    public class JSONTask extends AsyncTask<String, Integer, String>{
 
         @Override
         protected String doInBackground(String... link){
@@ -193,6 +193,7 @@ public class Tab2 extends Fragment {
             super.onPostExecute(result);
 
         }
+
         private String getStringFromBitmap(Bitmap bitmapPicture) {
             String encodedImage;
             ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
@@ -219,7 +220,7 @@ public class Tab2 extends Fragment {
 
     }
 
-    public class GETTask extends AsyncTask<String, String ,String>{
+    public class GETTask extends AsyncTask<String, Integer ,String>{
 
         @Override
         protected String doInBackground(String... strings) {
@@ -278,7 +279,9 @@ public class Tab2 extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
             //Log.d("get data", result);
+
             tab2_adapter mAdapter = new tab2_adapter();
             bitmaps_list = new ArrayList<Bitmap>();
             for(int i= 0; i<image_list.size(); i++){
@@ -289,17 +292,16 @@ public class Tab2 extends Fragment {
                 byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 //if(decodedByte != null){
-                    bitmaps_list.add(decodedByte);
+                bitmaps_list.add(decodedByte);
                 //}
                 Bitmap thumbnail = ThumbnailUtils.extractThumbnail(decodedByte,300,300);
+                publishProgress((int) ((i / (image_list.size()) ) * 100));
                 mAdapter.addItem(thumbnail);
-                Log.d("added","image");
-                //gridViews.setAdapter(mAdapter);
+
             }
             mAdapter.notifyDataSetChanged();
             gridViews.setAdapter(mAdapter);
         }
-
     }
 
 

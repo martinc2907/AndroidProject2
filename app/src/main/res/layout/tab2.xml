@@ -34,7 +34,6 @@
         android:numColumns="3"
         android:paddingTop="10dp"
         android:verticalSpacing="10dp">
-
     </GridView>
 
 
