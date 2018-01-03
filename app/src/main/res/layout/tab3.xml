@@ -4,13 +4,19 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation = "vertical">
+    android:orientation = "vertical"
+    android:paddingBottom="60dp"
+    android:background = "#CFCDD7">
 
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
 
         <Button
             android:id="@+id/all_food"

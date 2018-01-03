@@ -2,11 +2,14 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="60dp"
+    android:background = "#CFCDD7">
     <!--tools:context="com.example.user.project2.MainActivity$PlaceholderFragment"-->
 
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

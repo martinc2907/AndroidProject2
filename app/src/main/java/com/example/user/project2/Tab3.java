@@ -1,5 +1,7 @@
 package com.example.user.project2;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +38,8 @@ public class Tab3 extends Fragment implements View.OnClickListener {
     public TextView textView;
 
     public ArrayList<String> food_list;
+
+    public tab3_adapter mAdapter;
 
 
     @Override
@@ -74,6 +79,15 @@ public class Tab3 extends Fragment implements View.OnClickListener {
                 new GETTask().execute("etc");
                 break;
         }
+
+        listViews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String PhoneNumber = mAdapter.getItem(position).getnumber();
+                startActivity( new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + PhoneNumber)));
+            }
+        });
+
     }
 
     public class GETTask extends AsyncTask<String, Integer ,JSONArray> {
@@ -128,7 +142,7 @@ public class Tab3 extends Fragment implements View.OnClickListener {
         @Override
         protected void onPostExecute(JSONArray result) {
 
-            tab3_adapter mAdapter = new tab3_adapter();
+            mAdapter = new tab3_adapter();
 
             super.onPostExecute(result);
             Log.d("json object?",result.toString());

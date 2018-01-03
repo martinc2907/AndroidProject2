@@ -86,7 +86,6 @@ public class Tab2 extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent i = new Intent(getActivity().getApplicationContext(), ItemClick.class);
 
-                //i.putExtra("id", bitmaps_list.get(position)); //
                 i.putExtra(("id"),position);
                 startActivity(i);
             }

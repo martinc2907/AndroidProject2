@@ -67,7 +67,7 @@ public class tab3_adapter extends BaseAdapter {
         store_name.setText(getItem(position).getname());
 
         if(getItem(position).getcash_only().equals("true")){
-            cash_only.setText("현금만 사용이 가능합니다. 현금 결제를 부탁드립니다.");
+            cash_only.setText("현금만 사용이 가능합니다. \n 현금 결제를 부탁드립니다.");
         }
         else{
             cash_only.setText("현금, 카드 모두 사용 가능");
