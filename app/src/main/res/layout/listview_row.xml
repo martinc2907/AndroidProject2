@@ -9,7 +9,7 @@
         android:id = "@+id/custom_dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/einstein_face"
+        android:src="@drawable/anon"
         />
     <LinearLayout
         android:layout_width="match_parent"
