@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,8 +43,6 @@ public class Tab3 extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.tab3, container, false);
 
         listViews = (ListView)rootView.findViewById(R.id.delivery);
-
-        textView = (TextView)rootView.findViewById(R.id.txt);
 
         Button all_menu = (Button)rootView.findViewById(R.id.all_food);
         Button chicken = (Button)rootView.findViewById(R.id.chicken);
@@ -76,10 +76,10 @@ public class Tab3 extends Fragment implements View.OnClickListener {
         }
     }
 
-    public class GETTask extends AsyncTask<String, Integer ,String> {
+    public class GETTask extends AsyncTask<String, Integer ,JSONArray> {
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected JSONArray doInBackground(String... strings) {
             try {
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
@@ -99,10 +99,7 @@ public class Tab3 extends Fragment implements View.OnClickListener {
                         responseStrBuilder.append(inputStr);
 
                     JSONArray jsonObject = new JSONArray(responseStrBuilder.toString());
-
-
-                    Log.d("buffer is this ", jsonObject.toString());
-                    return jsonObject.toString();
+                    return jsonObject;
 
                 } catch (MalformedURLException e){
                     e.printStackTrace();
@@ -126,10 +123,31 @@ public class Tab3 extends Fragment implements View.OnClickListener {
             return null;
         }
 
+        //String type, String name, String number, String cash_only
+
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(JSONArray result) {
+
+            tab3_adapter mAdapter = new tab3_adapter();
+
             super.onPostExecute(result);
-            textView.setText(result);
+            Log.d("json object?",result.toString());
+
+            for(int i = 0; i < result.length(); i++){
+                try {
+                    JSONObject jsonObject = result.getJSONObject(i);
+                    String type = jsonObject.getString("type");
+                    String name = jsonObject.getString("name");
+                    String number = jsonObject.getString("number");
+                    String only_cash = jsonObject.getString("only_cash");
+                    mAdapter.addItem(type,name,number,only_cash);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            listViews.setAdapter(mAdapter);
+
         }
     }
 

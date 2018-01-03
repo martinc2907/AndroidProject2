@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
  * Created by user on 2018-01-03.
  */
 
+
+
 public class gallery_item{
         private Bitmap bm;
 

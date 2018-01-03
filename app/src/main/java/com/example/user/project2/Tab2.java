@@ -280,20 +280,16 @@ public class Tab2 extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            //Log.d("get data", result);
-
             tab2_adapter mAdapter = new tab2_adapter();
+
             bitmaps_list = new ArrayList<Bitmap>();
             for(int i= 0; i<image_list.size(); i++){
-                //tab2_adapter mAdapter = new tab2_adapter();
                 String splited = image_list.get(i).substring(14,(image_list.get(i).length() - 2));
                 String str = splited.replace("\\n", "");
                 Log.d("splited",str);
                 byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                //if(decodedByte != null){
                 bitmaps_list.add(decodedByte);
-                //}
                 Bitmap thumbnail = ThumbnailUtils.extractThumbnail(decodedByte,300,300);
                 publishProgress((int) ((i / (image_list.size()) ) * 100));
                 mAdapter.addItem(thumbnail);

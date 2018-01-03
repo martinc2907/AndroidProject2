@@ -18,8 +18,6 @@ public class ItemClick extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.imagefrag);
 
-
-
         Intent i = getIntent();
 
         int link = (int) i.getExtras().get("id");
