@@ -85,12 +85,11 @@ public class Tab1 extends Fragment{
         callbackManager  = CallbackManager.Factory.create();
         loginButton = (LoginButton) rootView.findViewById(R.id.login_button);
 
-        textView = rootView.findViewById(R.id.email);
+        //textView = rootView.findViewById(R.id.email);
         listView = rootView.findViewById(R.id.listview);
         contactButton = rootView.findViewById(R.id.contact);
 
         EnableRuntimePermission();
-        //Log.e("PHONE", "WTF" + find_number_in_phone().toString());
 
         // If using in a fragment
         loginButton.setFragment(this);

@@ -11,7 +11,8 @@
         android:layout_gravity = "center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop = "20dp">
+        android:layout_marginTop = "20dp"
+        android:layout_marginBottom = "20dp">
         <com.facebook.login.widget.LoginButton
             android:layout_gravity ="center_vertical"
             xmlns:facebook = "http://schemas.android.com/apk/res-auto"
@@ -20,21 +21,20 @@
             facebook:com_facebook_login_text = "Sync Facebook"
             android:height = "50dp"
             android:layout_width="155dp"
-            android:layout_marginRight = "20dp"
+            android:layout_marginRight = "31dp"
             android:layout_height="wrap_content"
-            android:background = "#ff6b6b"/>
+            android:background="#2c5f7e"/>
 
         <Button
-
             android:bottomRightRadius = "300dp"
             android:bottomLeftRadius = "50dp"
             android:topLeftRadius = "50dp"
             android:topRightRadius = "50dp"
-            android:background = "#4f6b6b"
+            android:background="#2c5f7e"
             android:layout_gravity ="center_vertical"
             android:id = "@+id/contact"
             android:layout_width="155dp"
-            android:layout_height = "33dp"
+            android:layout_height = "30dp"
             android:text = "Sync Contacts"
             android:textStyle = "bold"
             android:textAllCaps = "false"
@@ -45,20 +45,12 @@
             />
     </LinearLayout>
 
-    <TextView
-        android:layout_gravity = "center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id = "@+id/email"
-        android:textStyle = "bold"
-        android:layout_marginBottom = "20dp"
-        />
-
     <ListView
         android:divider = "#5B5A62"
-        android:dividerHeight = "3sp"
+        android:dividerHeight = "1sp"
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="57dp"></ListView>
 
 </LinearLayout>

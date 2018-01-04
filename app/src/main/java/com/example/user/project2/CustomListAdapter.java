@@ -16,10 +16,8 @@ import java.util.ArrayList;
  */
 
 public class CustomListAdapter extends ArrayAdapter {
-    int[] colors =new int[50];
-    int start = 0xffff6b6b;
-    //{0xffff6b6b, 0xffef6b6b, 0xffcf6b6b, 0xffaf6b6b, 0xff8f6b6b, 0xff6f6b6b, 0xff4f6b6b};
-    int[] colors2 = {0xffC62828, 0xffD32F2F, 0xffE53935, 0xffF44336, 0xffEF5350, 0xffE57373, 0xffEF9A9A};
+    int[] colors2 = {0xff19547b,0xff2c5f7e,0xff3f6a80,0xff527583,0xff668086,0xff798b88,0xff8c968b,0xff9fa18e,0xffb2ac90,0xffc5b793,0xffd9c296,0xffeccd98,0xffffd89b};
+
     private final Activity context;
     private final ArrayList<String> urlArray;   //array of URLs later.
     private final ArrayList<String> nameArray;
@@ -28,11 +26,6 @@ public class CustomListAdapter extends ArrayAdapter {
     public CustomListAdapter(Activity context, ArrayList<String> nameArrayParam, ArrayList<String> phoneArrayParam, ArrayList<String> urlArray){
 
         super(context,R.layout.listview_row , nameArrayParam);
-
-        for(int i = 0; i < 50; i ++){
-            colors[i] = start;
-            start -= 0x00200000;
-        }
         this.context=context;
         this.urlArray = urlArray;
         this.nameArray = nameArrayParam;
@@ -54,9 +47,7 @@ public class CustomListAdapter extends ArrayAdapter {
         infoTextField.setText(phoneArray.get(position));
         //new DownloadImageTask(imageView).execute(urlArray.get(position));
 
-
-        rowView.setBackgroundColor(colors[position]);
-
+        rowView.setBackgroundColor(colors2[position]);
 
         return rowView;
     };
